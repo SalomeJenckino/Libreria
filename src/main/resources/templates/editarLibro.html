@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Libro</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    </head>
+    <body>
+        <div class="conteiner">
+            <main>
+                <div class="px-3 py-3">
+ <!--                    <h1><span th:text="${editar.id != null ? 'Actualizar' : 'Crear'}"></span> Libro</h1>-->
+                   <h1><span th:text="${accion}"></span> Libro</h1>
+
+                    <form>
+                        
+                        <p th:if="${error != null}" th:text="${error}" style="color: red;"></p>
+                        
+                        <input type="hidden" name="id" th:value="${editar.id}"/>
+                        
+                        <label>ISBN</label><br>
+                        <input type="text" name="isbn" th:value="${editar.isbn}" placeholder="ISBN" th:disable="${accion == 'Eliminar'}"/>
+                        <br><br>
+                        <label>Titulo</label><br>
+                        <input type="text" name="titulo" th:value="${editar.titulo}" placeholder="Titutlo" th:disable="${accion == 'Eliminar'}"/>
+                        <br><br>
+                        <label>A&ntildeo</label><br>
+                        <input type="text" name="anio" th:value="${editar.anio}" placeholder="Anio" th:disable="${accion == 'Eliminar'}"/>
+                        <br><br>
+                        <label>Cantidad ejemplares</label><br>
+                        <input type="text" name="ejemplares" th:value="${editar.ejemplares}" placeholder="Cantidad ejemplares" th:disable="${accion == 'Eliminar'}"/>
+                        <br><br>
+                        <label>Autor</label><br>
+                        <select name="idAutor" th:disable="${accion == 'Eliminar'}">
+                            <option th:each="autor : ${autores}" th:value="${autor.id}" th:text="${autor.nombre}" th:selected="${editar.autor != null && autor.id==editar.autor.id}"></option>
+                        </select>
+                        <br><br>
+                        <label>Editorial</label><br>
+                        <select name="idEditorial" th:disable="${accion == 'Eliminar'}">
+                            <option th:each="editorial : ${editoriales}" th:value="${editorial.id}" th:text="${editorial.nombre}" th:selected="${editar.editorial != null && editorial.id==editar.editorial.id}"></option>
+                        </select>
+                        <br><br>
+                        <button th:if="${accion == 'Crear'}" type="submit" class="btn btn-success" formaction="/libro/actualizar-libro" formmethod="post">Crear</button>
+                        <button th:if="${accion == 'Actualizar'}" type="submit" class="btn btn-success" formaction="/libro/actulizar-libro" formmethod="post">Actualizar</button>
+                        <button sec:authorize="hasRole('ROLE_ADMIN')" th:if="${accion == 'Eliminar'}" type="submit" class="btn btn-danger" formaction="/libro/eliminar-libro" formmethod="get">Eliminar</button>
+                        <a href="/inicio" class="btn btn-primary btn-xl">Volver</a>
+                        <!--<button onclick="location.href='http://localhost'">Salir</button>
+                        <button type="reset">Borrar</button>-->
+                    </form>
+                </div>
+            </main>
+        </div>
+    </body>
+</html>
+
